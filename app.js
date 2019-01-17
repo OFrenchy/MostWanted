@@ -82,8 +82,8 @@ function mainMenu(person, people){
 }
 
 function searchByName(people){
-  var firstName = promptFor("What is the person's first name?", chars);
-  var lastName = promptFor("What is the person's last name?", chars);
+  var firstName = properCase(promptFor("What is the person's first name?", chars));
+  var lastName = properCase(promptFor("What is the person's last name?", chars));
 
   let filteredPeople = people.filter(function(el) {
     if(el.firstName === firstName && el.lastName === lastName) {
@@ -134,3 +134,12 @@ function upperCaseFirstLetter(thisString = ""){
     return (thisString.charAt(0)).toUpperCase() + thisString.substr(1);
   }
 }
+
+function properCase(stringToProperCase) {
+    stringToProperCase = stringToProperCase.toLowerCase();
+    stringToProperCase = stringToProperCase.split(' ');
+  for (let i = 0; i < stringToProperCase.length; i++) {
+      stringToProperCase[i] = stringToProperCase[i].charAt(0).toUpperCase() + stringToProperCase[i].slice(1); 
+}
+  return stringToProperCase.join(' ');
+ }
