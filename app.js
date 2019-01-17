@@ -28,7 +28,14 @@ Build all of your functions for displaying and gathering information below (GUI)
 //     }
 // }
 
-        
+// var person = {
+//   firstName: "John",
+//   lastName : "Doe",
+//   id       : 5566,
+//   fullName : function() {
+//     return this.firstName + " " + this.lastName;
+//   }
+// };        
 
 // app is the function called to start the entire application
 function app(people){
@@ -88,6 +95,9 @@ function searchByName(people){
 
   let filteredPeople = people.filter(function(el) {
     if(el.firstName === firstName && el.lastName === lastName) {
+      el.fullName = this.firstName + " " + this.lastName;
+      console.log(new Date() - new Date(el.dob));
+      el.age = new Date(new Date() - new Date(el.dob));
       return el;
     }
   });
@@ -106,6 +116,34 @@ function displayPerson(person){
   // height, weight, age, name, occupation, eye color.
   var personInfo = "First Name: " + person.firstName + "\n";
   personInfo += "Last Name: " + person.lastName + "\n";
+  
+  personInfo += "gender: " + person.gender + "\n";
+  personInfo += "dob: " + person.dob + "\n";
+  personInfo += "Height: " + person.height + "\n";
+  personInfo += "Weight: " + person.weight + "\n";
+  personInfo += "Eye olor: " + person.eyeColor + "\n";
+  personInfo += "occupation: " + person.occupation + "\n";
+  
+
+  personInfo += "Last Name: " + person.lastName + "\n";
+  personInfo += "Last Name: " + person.lastName + "\n";
+  
+
+    //   "gender": "male",
+    // "dob": "1/18/1949",
+    // "height": 71,
+    // "weight": 175,
+    // "eyeColor": "brown",
+    // "occupation": "programmer",
+
+
+
+
+
+  // testing
+  personInfo += "index 0: " + person.property() .index(0) + "\n";
+  //personInfo += "index 1: " + person[1] + "\n";
+  
   // TODO: finish getting the rest of the information to display
   for (let i = 0; i < data.length; i++)
        
@@ -131,7 +169,6 @@ function yesNo(input){
 function chars(input){
   return true; // default validation only
 }
-
 
 // Function to uppercase the first letter
 function upperCaseFirstLetter(thisString = ""){
