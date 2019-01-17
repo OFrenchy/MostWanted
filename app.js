@@ -107,6 +107,10 @@ function displayPerson(person){
   var personInfo = "First Name: " + person.firstName + "\n";
   personInfo += "Last Name: " + person.lastName + "\n";
   // TODO: finish getting the rest of the information to display
+  for (let i = 0; i < data.length; i++)
+       
+        return this.firstName + " " + this.lastName;
+          
   alert(personInfo);
 }
 
