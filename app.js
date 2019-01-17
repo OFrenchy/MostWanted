@@ -38,6 +38,7 @@ function app(people){
       console.log("inside case yes");
       let thisPersonArray = searchByName(people)
       console.log(thisPersonArray[0].lastName);
+      displayPerson(thisPersonArray[0]);
       break;
     case 'no':
       // TODO: search by traits
