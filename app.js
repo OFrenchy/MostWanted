@@ -186,7 +186,7 @@ function properCase(stringToProperCase) {
   return stringToProperCase.join(' ');
  }
 
-function calculate_age(dob) { 
+function calculate_age(dobstring){ 
   var diff_ms = Date.now() - dob.getTime();
   var age_dt = new Date(diff_ms); 
 
