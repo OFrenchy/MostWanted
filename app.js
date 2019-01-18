@@ -15,6 +15,8 @@ Build all of your functions for displaying and gathering information below (GUI)
 //      relation to the found person).
 // - As a developer, I want to use the array.map() advanced array method within my project.
 // - As a developer, I want to make consistent commits with good, descriptive messages.
+
+// The following are not in the scope of the project:
 // - As a developer, FOR FUTURE IMPROVEMENTS, I want to verify that only one person is 
 //      found when doing a name search
 
