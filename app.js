@@ -19,7 +19,10 @@ Build all of your functions for displaying and gathering information below (GUI)
 // The following are not in the scope of the project:
 // - As a developer, FOR FUTURE IMPROVEMENTS, I want to verify that only one person is 
 //      found when doing a name search
-
+// - As a developer, I want to display the spouse's and parents names instead of their 
+//      id numbers.
+// - As a developer, I want to exit the function gracefully any time the user hits
+//      escape instead of entering yes or no or whatever it's expecting
 
 
 // function promptForInput(promptForInput, dataType) {   
@@ -42,17 +45,36 @@ Build all of your functions for displaying and gathering information below (GUI)
 
 // app is the function called to start the entire application
 function app(people){
+    
+    // people = people.filter(function(el) {
+    //     el.fullName = el.firstName + " " + el.lastName;
+    //     el.age = calculate_age(el.dob);
+    //     // if(el.firstName === "Joy" && el.lastName === "Madden") {
+    //     //     alert("found Joy Madden");
+    //     //     alert(el.fullName);
+    //         return true;
+    //     // }
+
+    // });
+    people = people.map(function (el) {
+        el.fullName = el.firstName + " " + el.lastName;
+        el.age = calculate_age(el.dob);
+        return el;
+    });
+
+
+
+ console.log(people);
+
+
   var searchResults;
-  var searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo).toLowerCase();
+  var searchType = promptFor("Do you know the name of the person you are looking for? Enter 'y' for yes or 'n' for no", yesNo).toLowerCase();
   switch(searchType){
     case 'y':
       // this next line works
       // let thisPerson = searchByName(people);
-      let thisPerson = searchForPeople("name", people);
-
-      //console.log(thisPerson[0].lastName);
-      //displayPerson(thisPerson[0]);
-      mainMenu(thisPerson[0], people);
+      let searchResults = searchForPeople("name", people) ;
+      mainMenu(searchResults[0], people);
       break;
     case 'n':
       // TODO: search by traits
@@ -89,6 +111,15 @@ function mainMenu(person, people){
       break;
     case "family":
       // TODO: get person's family
+      let searchResults = searchForPeople("family", people, person.id);
+
+      //displayPeople
+      if (searchResults.length >= 1 ){
+          displayPeople(searchResults);
+      }
+      else {
+        alert("No family found for " + person.fullName);
+      }
 
       break;
     case "descendants":
@@ -118,30 +149,44 @@ function searchByName(people){
     return filteredPeople;
 }
 
-function searchForPeople(searchType = "", people){
-    
+function searchForPeople(searchType = "", people, idToSearch = -1){
+    let filteredPeople;
     if (searchType === "name") {
         var firstName = properCase(promptFor("What is the person's first name?", chars));
         var lastName = properCase(promptFor("What is the person's last name?", chars));
+
+        filteredPeople = people.filter(function(el) {
+            if(el.firstName === firstName && el.lastName === lastName) {
+                // el.fullName = el.firstName + " " + el.lastName;
+                // el.age = calculate_age(el.dob);
+                return el;
+            }
+        });
+        //return filteredPeople;
+
+    }
+    else if (searchType === "family") {
+        //var searchCriteria = "fill this in";
+        // idToSearch
+        filteredPeople = people.filter(function(el) {
+            //if(el.currentSpouse === idToSearch || el.parents === idToSearch) {
+            if(el.currentSpouse === idToSearch || el.parents.indexOf (idToSearch) >= 0) {
+                return el;
+            }
+        });
+        //return filteredPeople;
+
+    }
+    else if (searchType === "descendants") {
+        var searchCriteria = "fill this in";
+
     }
     else if (searchType === "traits") {
         var searchCriteria = "fill this in";
+
     }
 
-    let filteredPeople = people.filter(function(el) {
-        
 
-
-        if(el.firstName === firstName && el.lastName === lastName) {
-            el.fullName = el.firstName + " " + el.lastName;
-            el.age = calculate_age(el.dob);
-
-
-
-            
-         return el;
-        }
-    });
     return filteredPeople;
 }
 
@@ -163,9 +208,7 @@ function displayPerson(person){
       //console.log(key + ": " + value);
       personInfo += key + ": " + value + "\n";
     }
-
-    // TODO: finish getting the rest of the information to display
-           
+    // DONE! TODO: finish getting the rest of the information to display
     alert(personInfo);
 }
 
@@ -203,19 +246,19 @@ function properCase(stringToProperCase) {
   return stringToProperCase.join(' ');
  }
 
-<<<<<<< HEAD
-function calculate_age(dobstring){ 
-  var diff_ms = Date.now() - dob.getTime();
-  var age_dt = new Date(diff_ms); 
+//<<<<<<< HEAD
+// function calculate_age(dobstring){ 
+//   var diff_ms = Date.now() - dob.getTime();
+//   var age_dt = new Date(diff_ms); 
 
-  return Math.abs(age_dt.getUTCFullYear() - 1970);
-=======
+//   return Math.abs(age_dt.getUTCFullYear() - 1970);
+// =======
 function calculate_age(dobString) { 
     let dob = new Date(dobString);
     var diff_ms = Date.now() - dob.getTime();
     var age_dt = new Date(diff_ms); 
     return Math.abs(age_dt.getUTCFullYear() - 1970);
->>>>>>> 62439f13a34a7693ff38f43f1770c0bfdbcb7774
+//>>>>>>> 62439f13a34a7693ff38f43f1770c0bfdbcb7774
 }
 
 // console.log(calculate_age(new Date("el.age")));
