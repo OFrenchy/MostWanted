@@ -97,7 +97,8 @@ function searchByName(people){
     if(el.firstName === firstName && el.lastName === lastName) {
       el.fullName = this.firstName + " " + this.lastName;
       console.log(new Date() - new Date(el.dob));
-      el.age = new Date(new Date() - new Date(el.dob));
+      //el.age = new Date(new Date() - new Date(el.dob));
+      el.age = calcAge(el.dob);
       return el;
     }
   });
