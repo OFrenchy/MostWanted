@@ -6,7 +6,7 @@ Build all of your functions for displaying and gathering information below (GUI)
 //      is re-prompted when they provide invalid input.
 // - As a user, I want to be able to search for someone based on a single criterion.
 // - As a user, I want to be able to search for someone based on 2-5 criteria.
-// - As a user, I want to be able to look up someone’s information after I find them 
+// -X As a user, I want to be able to look up someone’s information after I find them 
 //      with the program (display values for the various traits of the found person).
 // - As a user, I want to be able look up someone’s descendants after I find them with 
 //      the program (display the names of the descendants), using recursion.
@@ -15,7 +15,8 @@ Build all of your functions for displaying and gathering information below (GUI)
 //      relation to the found person).
 // - As a developer, I want to use the array.map() advanced array method within my project.
 // - As a developer, I want to make consistent commits with good, descriptive messages.
-
+// - As a developer, FOR FUTURE IMPROVEMENTS, I want to verify that only one person is 
+//      found when doing a name search
 
 
 
@@ -39,16 +40,22 @@ Build all of your functions for displaying and gathering information below (GUI)
 
 // app is the function called to start the entire application
 function app(people){
+  var searchResults;
   var searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo).toLowerCase();
   switch(searchType){
-    case 'yes':
-      console.log("inside case yes");
-      let thisPersonArray = searchByName(people)
-      console.log(thisPersonArray[0].lastName);
-      displayPerson(thisPersonArray[0]);
+    case 'y':
+      // this next line works
+      // let thisPerson = searchByName(people);
+      let thisPerson = searchForPeople("name", people);
+
+      //console.log(thisPerson[0].lastName);
+      //displayPerson(thisPerson[0]);
+      mainMenu(thisPerson[0], people);
       break;
-    case 'no':
+    case 'n':
       // TODO: search by traits
+      searchResults = searchForPeople("traits", people);
+
       break;
     default:
       alert("Invalid input. Please try again!");
@@ -60,21 +67,27 @@ function app(people){
 // Menu function to call once you find who you are looking for
 function mainMenu(person, people){
 
-  /* Here we pass in the entire person object that we found in our search, as well as the entire original dataset of people. We need people in order to find descendants and other information that the user may want. */
+    /* Here we pass in the entire person object that we found in our search, 
+        as well as the entire original dataset of people. We need people in 
+        order to find descendants and other information that the user may want. */
 
   if(!person){
     alert("Could not find that individual.");
     return app(people); // restart
   }
 
-  var displayOption = prompt("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'");
+  var displayOption = prompt("Found " + person.firstName + " " + person.lastName + 
+    " . Do you want to know their 'info', 'family', or 'descendants'? " + 
+    "Type the option you want or 'restart' or 'quit'");
 
   switch(displayOption){
     case "info":
-      // TODO: get person's info
+      // DONE!  TODO: get person's info
+      displayPerson(person);
       break;
     case "family":
       // TODO: get person's family
+
       break;
     case "descendants":
       // TODO: get person's descendants
@@ -90,20 +103,46 @@ function mainMenu(person, people){
 }
 
 function searchByName(people){
-  var firstName = properCase(promptFor("What is the person's first name?", chars));
-  var lastName = properCase(promptFor("What is the person's last name?", chars));
+    var firstName = properCase(promptFor("What is the person's first name?", chars));
+    var lastName = properCase(promptFor("What is the person's last name?", chars));
 
-  let filteredPeople = people.filter(function(el) {
-    if(el.firstName === firstName && el.lastName === lastName) {
-      el.fullName = this.firstName + " " + this.lastName;
-      console.log(new Date() - new Date(el.dob));
-      //el.age = new Date(new Date() - new Date(el.dob));
-      el.age = calcAge(el.dob);
-      return el;
-    }
-  });
- return filteredPeople;
+    let filteredPeople = people.filter(function(el) {
+        if(el.firstName === firstName && el.lastName === lastName) {
+            el.fullName = el.firstName + " " + el.lastName;
+            el.age = calculate_age(el.dob);
+         return el;
+        }
+    });
+    return filteredPeople;
 }
+
+function searchForPeople(searchType = "", people){
+    
+    if (searchType === "name") {
+        var firstName = properCase(promptFor("What is the person's first name?", chars));
+        var lastName = properCase(promptFor("What is the person's last name?", chars));
+    }
+    else if (searchType === "traits") {
+        var searchCriteria = "fill this in";
+    }
+
+    let filteredPeople = people.filter(function(el) {
+        
+
+
+        if(el.firstName === firstName && el.lastName === lastName) {
+            el.fullName = el.firstName + " " + el.lastName;
+            el.age = calculate_age(el.dob);
+
+
+
+            
+         return el;
+        }
+    });
+    return filteredPeople;
+}
+
 
 // alerts a list of people
 function displayPeople(people){
@@ -115,42 +154,17 @@ function displayPeople(people){
 function displayPerson(person){
   // print all of the information about a person:
   // height, weight, age, name, occupation, eye color.
-  var personInfo = "First Name: " + person.firstName + "\n";
-  personInfo += "Last Name: " + person.lastName + "\n";
+  var personInfo = ""; //"First Name: " + person.firstName + "\n";
   
-  personInfo += "gender: " + person.gender + "\n";
-  personInfo += "dob: " + person.dob + "\n";
-  personInfo += "Height: " + person.height + "\n";
-  personInfo += "Weight: " + person.weight + "\n";
-  personInfo += "Eye olor: " + person.eyeColor + "\n";
-  personInfo += "occupation: " + person.occupation + "\n";
-  
+    for (let key in person) {
+      let value = person[key];
+      //console.log(key + ": " + value);
+      personInfo += key + ": " + value + "\n";
+    }
 
-  personInfo += "Last Name: " + person.lastName + "\n";
-  personInfo += "Last Name: " + person.lastName + "\n";
-  
-
-    //   "gender": "male",
-    // "dob": "1/18/1949",
-    // "height": 71,
-    // "weight": 175,
-    // "eyeColor": "brown",
-    // "occupation": "programmer",
-
-
-
-
-
-  // testing
-  personInfo += "index 0: " + person.property() .index(0) + "\n";
-  //personInfo += "index 1: " + person[1] + "\n";
-  
-  // TODO: finish getting the rest of the information to display
-  for (let i = 0; i < data.length; i++)
-       
-        return this.firstName + " " + this.lastName;
-          
-  alert(personInfo);
+    // TODO: finish getting the rest of the information to display
+           
+    alert(personInfo);
 }
 
 // function that prompts and validates user input
@@ -163,7 +177,7 @@ function promptFor(question, callback){
 
 // helper function to pass into promptFor to validate yes/no answers
 function yesNo(input){
-  return input.toLowerCase() == "yes" || input.toLowerCase() == "no";
+  return input[0].toLowerCase() == "y" || input[0].toLowerCase() == "n";
 }
 
 // helper function to pass in as default promptFor validation
@@ -187,11 +201,11 @@ function properCase(stringToProperCase) {
   return stringToProperCase.join(' ');
  }
 
-function calculate_age(dob) { 
-  var diff_ms = Date.now() - dob.getTime();
-  var age_dt = new Date(diff_ms); 
-
-  return Math.abs(age_dt.getUTCFullYear() - 1970);
+function calculate_age(dobString) { 
+    let dob = new Date(dobString);
+    var diff_ms = Date.now() - dob.getTime();
+    var age_dt = new Date(diff_ms); 
+    return Math.abs(age_dt.getUTCFullYear() - 1970);
 }
 
 // console.log(calculate_age(new Date("el.age")));
