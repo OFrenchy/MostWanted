@@ -203,11 +203,19 @@ function properCase(stringToProperCase) {
   return stringToProperCase.join(' ');
  }
 
+<<<<<<< HEAD
+function calculate_age(dobstring){ 
+  var diff_ms = Date.now() - dob.getTime();
+  var age_dt = new Date(diff_ms); 
+
+  return Math.abs(age_dt.getUTCFullYear() - 1970);
+=======
 function calculate_age(dobString) { 
     let dob = new Date(dobString);
     var diff_ms = Date.now() - dob.getTime();
     var age_dt = new Date(diff_ms); 
     return Math.abs(age_dt.getUTCFullYear() - 1970);
+>>>>>>> 62439f13a34a7693ff38f43f1770c0bfdbcb7774
 }
 
 // console.log(calculate_age(new Date("el.age")));
