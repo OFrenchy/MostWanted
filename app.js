@@ -191,11 +191,8 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
         var searchCriteria = "fill this in";
 
     }
-
-
     return filteredPeople;
 }
-
 
 // alerts a list of people
 function displayPeople(people){
@@ -208,6 +205,7 @@ function displayPeople(people){
     return returnString + person.fullName;
   }).join("\n"));
 }
+
 // function displayPeople(people){
 //   alert(people.map(function(person){
 //     return person.firstName + " " + person.lastName;
@@ -242,28 +240,20 @@ function yesNo(input){
 }
 
 // helper function to pass in as default promptFor validation
+// verifies a alphabetic input
 function chars(input){
-  
   return isAlphabetic(input);
-
-  //return true; // default validation only
 }
-function validNumber(input) {
-    // taken from getPrimeNumbers
-    // if(isNaN(input) || input == "") {
-    //     return "Please enter a valid number.";
-    // }
 
+// validates a number
+function isValidNumber(input) {
     // return true if it is NOT a non-number AND it's not an empty string 
     //    AND there is no space in the string 
     //this one is for yesNo. return (!isNaN(input) && input != "" and input.indexOf(" ") == -1);
     return( ((!isNaN(input))  &&  (input != "") && (input).indexOf(" ") == -1));
-
-    //alert("first one is: " + ((!isNaN("111"))  &&  ("111" != "") && ("111").indexOf(" ") == -1));
-    //alert("first one is: " + ((!isNaN(input))  &&  (input != "") && (input).indexOf(" ") == -1));
-
 }
 // Function to uppercase the first letter
+
 function upperCaseFirstLetter(thisString = ""){
   if (thisString !== ""){
     return (thisString.charAt(0)).toUpperCase() + thisString.substr(1);
