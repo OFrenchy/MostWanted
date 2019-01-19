@@ -13,7 +13,7 @@ Build all of your functions for displaying and gathering information below (GUI)
 // -X As a user, I want to be able look up someone’s immediate family members after I 
 //      find them with the program (display the names of the family members and their 
 //      relation to the found person).
-// - As a developer, I want to use the array.map() advanced array method within my project.
+// -X As a developer, I want to use the array.map() advanced array method within my project.
 // - As a developer, I want to make consistent commits with good, descriptive messages.
 
 // The following are not in the scope of the project:
@@ -111,7 +111,7 @@ function mainMenu(person, people){
         displayPerson(person);
         break;
     case "family":
-        // TODO: get person's family
+        // DONE!  TODO: get person's family
         let searchResults = searchForPeople("family", people, person.id);
 
         //displayPeople
@@ -125,6 +125,7 @@ function mainMenu(person, people){
         break;
     case "descendants":
       // TODO: get person's descendants
+
       break;
     case "restart":
       app(people); // restart
@@ -184,10 +185,12 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
         //return filteredPeople;
     }
     else if (searchType === "descendants") {
+        // TODO
         var searchCriteria = "fill this in";
 
     }
     else if (searchType === "traits") {
+        // TODO
         var searchCriteria = "fill this in";
 
     }
@@ -196,14 +199,14 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
 
 // alerts a list of people
 function displayPeople(people){
-  alert(people.map(function(person){
-    //return if(person.relationship != ""){return person.relationship + ": ";} + person.fullName;
-    let returnString = "";
-    if (person.relationship != "") {
-      returnString = person.relationship + ": ";
-    }
-    return returnString + person.fullName;
-  }).join("\n"));
+    alert(people.map(function(person){
+        //return if(person.relationship != ""){return person.relationship + ": ";} + person.fullName;
+        let returnString = "";
+        if (person.relationship != "") {
+            returnString = person.relationship + ": ";
+        }
+        return returnString + person.fullName;
+    }).join("\n"));
 }
 
 // function displayPeople(people){
@@ -213,14 +216,13 @@ function displayPeople(people){
 //}
 
 function displayPerson(person){
-  // print all of the information about a person:
-  // height, weight, age, name, occupation, eye color.
-  var personInfo = ""; //"First Name: " + person.firstName + "\n";
-  
+    // print all of the information about a person:
+    // height, weight, age, name, occupation, eye color.
+    var personInfo = ""; //"First Name: " + person.firstName + "\n";
     for (let key in person) {
-      let value = person[key];
-      //console.log(key + ": " + value);
-      personInfo += key + ": " + value + "\n";
+        let value = person[key];
+        //console.log(key + ": " + value);
+        personInfo += key + ": " + value + "\n";
     }
     // DONE! TODO: finish getting the rest of the information to display
     alert(personInfo);
@@ -228,24 +230,24 @@ function displayPerson(person){
 
 // function that prompts and validates user input
 function promptFor(question, callback){
-  do{
-    var response = prompt(question).trim();
-  } while(!response || !callback(response));
-  return response;
+    do{
+        var response = prompt(question).trim();
+    } while(!response || !callback(response));
+    return response;
 }
 
 // helper function to pass into promptFor to validate yes/no answers
 function yesNo(input){
-  return input[0].toLowerCase() == "y" || input[0].toLowerCase() == "n";
+    return input[0].toLowerCase() == "y" || input[0].toLowerCase() == "n";
 }
 
 // helper function to pass in as default promptFor validation
 // verifies a alphabetic input
 function chars(input){
-  return isAlphabetic(input);
+    return isAlphabetic(input);
 }
 
-// validates a number
+// validates a number - for use in promptFor validation
 function isValidNumber(input) {
     // return true if it is NOT a non-number AND it's not an empty string 
     //    AND there is no space in the string 
@@ -255,18 +257,18 @@ function isValidNumber(input) {
 // Function to uppercase the first letter
 
 function upperCaseFirstLetter(thisString = ""){
-  if (thisString !== ""){
-    return (thisString.charAt(0)).toUpperCase() + thisString.substr(1);
-  }
+    if (thisString !== ""){
+        return (thisString.charAt(0)).toUpperCase() + thisString.substr(1);
+    }
 }
 
 function properCase(stringToProperCase) {
-    stringToProperCase = stringToProperCase.toLowerCase();
-    stringToProperCase = stringToProperCase.split(' ');
-  for (let i = 0; i < stringToProperCase.length; i++) {
-      stringToProperCase[i] = stringToProperCase[i].charAt(0).toUpperCase() + stringToProperCase[i].slice(1); 
+        stringToProperCase = stringToProperCase.toLowerCase();
+        stringToProperCase = stringToProperCase.split(' ');
+    for (let i = 0; i < stringToProperCase.length; i++) {
+        stringToProperCase[i] = stringToProperCase[i].charAt(0).toUpperCase() + stringToProperCase[i].slice(1); 
 }
-  return stringToProperCase.join(' ');
+    return stringToProperCase.join(' ');
  }
 
 function calculate_age(dobString) { 
@@ -277,34 +279,34 @@ function calculate_age(dobString) {
 }
 
 // This function was borrowed from our Problem Solving Problems code - for palindromes
-// function to strip non-alhpabetical characters
+// function to strip non-alhpabetical characters 
 function stripNonAlphabeticChars(stringToStrip = "") {
-  // loop through string and strip non-alhpabetical characters
-  let i = 0;
-  let stringStripped = "";
-  while(i < stringToStrip.length) {
-    if ((stringToStrip.charAt(i) >= "a" && stringToStrip.charAt(i) <= "z") 
-      || (stringToStrip.charAt(i) >= "A" && stringToStrip.charAt(i) <= "Z")) {
-      stringStripped = stringStripped + stringToStrip.charAt(i); 
+    // loop through string and strip non-alhpabetical characters
+    let i = 0;
+    let stringStripped = "";
+    while(i < stringToStrip.length) {
+        if ((stringToStrip.charAt(i) >= "a" && stringToStrip.charAt(i) <= "z") 
+            || (stringToStrip.charAt(i) >= "A" && stringToStrip.charAt(i) <= "Z")) {
+            stringStripped = stringStripped + stringToStrip.charAt(i); 
+        }
+        i++;
     }
-    i++;
-  }
-  return stringStripped;
+    return stringStripped;
 }
 
-// function to determine if string is strictly alhpabetical characters
+// function to determine if string is all alhpabetical characters for promptFor validation
 function isAlphabetic(inputString = "") {
-  // loop through string and strip non-alhpabetical characters
-  let i = 0;
-  let charIsAlpha = true;
-  
-  for (i=0; i < inputString.length; i++) {
-    if ( !(inputString.charAt(i) >= "a" && inputString.charAt(i) <= "z") 
-      &&  !(inputString.charAt(i) >= "A" && inputString.charAt(i) <= "Z")) {
-      return false; 
+    // loop through string and strip non-alhpabetical characters
+    let i = 0;
+    let charIsAlpha = true;
+    
+    for (i=0; i < inputString.length; i++) {
+        if ( !(inputString.charAt(i) >= "a" && inputString.charAt(i) <= "z") 
+            &&  !(inputString.charAt(i) >= "A" && inputString.charAt(i) <= "Z")) {
+            return false; 
+        }
     }
-  }
-  return true;
+    return true;
 }
 
 
