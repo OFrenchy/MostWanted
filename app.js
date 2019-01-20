@@ -63,28 +63,31 @@ function app(people){
     //alert("first one is: " + (!isNaN("111") && "111" != "" && ("111").indexOf(" ") == -1));
     
     // test for numeric inputs
-    alert("test first one is: " + ((!isNaN("111"))  &&  ("111" != "") && ("111").indexOf(" ") == -1));
-    alert("test  2nd  one is: " + ((!isNaN("1 11"))  &&  ("11 1" != "") && ("1 11").indexOf(" ") == -1));
+    // alert("test first one is: " + ((!isNaN("111"))  &&  ("111" != "") && ("111").indexOf(" ") == -1));
+    // alert("test  2nd  one is: " + ((!isNaN("1 11"))  &&  ("11 1" != "") && ("1 11").indexOf(" ") == -1));
 
-    // test for alphabetic characters
-    alert("testing isAlphabetic function: " + isAlphabetic("abc") );
-    alert("testing isAlphabetic function: " + isAlphabetic("ab12cd"));
+    // // test for alphabetic characters
+    // alert("testing isAlphabetic function: " + isAlphabetic("abc") );
+    // alert("testing isAlphabetic function: " + isAlphabetic("ab12cd"));
 
 
     
-    var searchResults;
+    let searchResults;
     var searchType = promptFor("Do you know the name of the person you are looking for? Enter 'y' for yes or 'n' for no", yesNo).toLowerCase();
     switch(searchType){
         case 'y':
             // this next line works
             // let thisPerson = searchByName(people);
-            let searchResults = searchForPeople("name", people) ;
+            searchResults = searchForPeople("name", people) ;
             mainMenu(searchResults[0], people);
             break;
         case 'n':
             // TODO: search by traits
             searchResults = searchForPeople("traits", people);
-            // TODO - do we want to do this?
+            if (searchResults === -1) {
+                // we have already prompted invalid input, so just restart app
+                app(people);
+            }
             mainMenu(searchResults[0], searchResults);
 
             break;
@@ -205,59 +208,65 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
         // the first letter of the trait followed by the value to search for, 
         // followed by comma, e.g "e green, g female" ; e for eyeColor g for gender
         let stringForPrompt = "";
-        // stringForPrompt = "Enter your search criteria using the first letter of the trait " +
-        //     ", based on the list of traits below.  " + 
-        //     "For example, to search for a green eyed female, enter \n'e green, g female' :\n" +
-        //     "gender (male or female)\nage\nheight\nweight\neye color\noccupation";
+        stringForPrompt = "Enter your search criteria using the first letter of the trait " +
+            ", based on the list of traits below.  " + 
+            "For example, to search for a green eyed female, enter \n'e green, g female' :\n" +
+            "gender (male or female)\nage\nheight\nweight\neye color\noccupation";
 
-        searchCriteria = prompt(stringForPrompt).toLowerCase;
+        searchCriteria = prompt(stringForPrompt).toLowerCase();
+        //searchCriteria = searchCriteria.toLowerCase();
         if (searchCriteria == -1 ){
             // TODO - replace with start over?
             alert("handle this cancel")
         }
+        //console.log(searchCriteria);
         let searchArray = searchCriteria.split(",");
         
         // set up filtered people object which will get further & further filtered
-        let filteredPeople = people;
+        filteredPeople = people;
         // loop through the criteria, finding the key value and
         // filter the people based on this trait
 
         for (i = 0; i < searchArray.length; i++ ) {
-            // (searchArray[i].split(" "))[0] should be the letter e.g. e for eyeColor, 
-            // (searchArray[i].split(" "))[1] should be the search value e.g. green
             // if the letter matches the first letter of the key, 
             // use this key to further filter the filteredPeople
-            for (let key in person) {
-                let firstLetter = ""; 
-                alert("Testing starting here");
-                console.log( (searchArray[i].split(" "))[0]);
-                console.log( (searchArray[i].split(" "))[1]);
-                // verify two items in this array
-                if (searchArray.length != 2) {
-                    // TODO - handle this invalid user input
-                    alert("Invalid input, please try again.");
-                }
-                let searchValue = (searchArray[i].split(" "))[1].toLowerCase;
-                if (key[0] === (searchArray[i])[0]) {//  .split(" "))[0]) 
-                    // replace the initial with the key, e.g. e with eyeColor
-                    (searchArray[i].split(" "))[0] = key;
-                    console.log(searchArray);
-                    console.log(el.key);
-                    console.log(searchValue);
-                    
+            let searchPair = (searchArray[i].trim()).split(" ");
+            // verify two items in this array
+            if (searchPair.length != 2) {
+                // TODO - handle this invalid user input
+                alert("Invalid input, please try again.");
+                return -1; 
+            }
+            let searchLetter = (searchPair[0]).trim();
+            let searchValue = (searchPair[1]).trim();
+            
+            // loop through all the keys, looking for the key whose first letter
+            // matches the input initial;  when it finds the full key, apply 
+            // the key & search value to filter the list of people      
+            for (let key in people[0]) {
+                console.log( (people[0]).key );
+                // if the first letter of the key matches the first letter of the search field, 
+                // this is the correct key, so 
+                // apply the filter with the key & searchValue
+                if (key[0] === searchLetter) {
                     // we found the right key, apply the filter
+
+                    // PROBLEM HERE WITH el.key, which comes up undefined - 
+                    // key = "eyeColor", for example, searchValue = "brown"
+                    // How do I pass this key to this filter 
                     filteredPeople = filteredPeople.filter(function(el) {
-                        if(el.key === searchValue ) {
-                            // el.fullName = el.firstName + " " + el.lastName;
-                            // el.age = calculate_age(el.dob);
-                            return el;
+                        if(el.key == searchValue ) {
+                            return true;
+                        }
+                        else {
+                            return false;
                         }
                     });
-
-                    // found the right key, we can exit the for loop for this trait
+                    // found the right key; results have been filtered, 
+                    // we can exit the for loop for this trait
+                    console.log(filteredPeople.length + " found")
                     break;
                 }
-                
             } 
         }   
         console.log(searchArray);
