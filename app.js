@@ -17,12 +17,16 @@ Build all of your functions for displaying and gathering information below (GUI)
 // - As a developer, I want to make consistent commits with good, descriptive messages.
 
 // The following are not in the scope of the project:
+// -----  FOR FUTURE IMPROVEMENTS  -------------------
 // - As a developer, FOR FUTURE IMPROVEMENTS, I want to verify that only one person is 
 //      found when doing a name search
 // - As a developer, I want to display the spouse's and parents names instead of their 
 //      id numbers.
 // - As a developer, I want to exit the function gracefully any time the user hits
 //      escape instead of entering yes or no or whatever it's expecting
+// - As a user, I want to see a list of valid values for the various traits, 
+//      e.g. eyeColor: green, blue, hazel, etc., which would be culled from the 
+//      people's eyeColor field
 
 
 // function promptForInput(promptForInput, dataType) {   
@@ -80,6 +84,8 @@ function app(people){
         case 'n':
             // TODO: search by traits
             searchResults = searchForPeople("traits", people);
+            // TODO - do we want to do this?
+            mainMenu(searchResults[0], searchResults);
 
             break;
         default:
@@ -137,19 +143,19 @@ function mainMenu(person, people){
   }
 }
 
-function searchByName(people){
-    var firstName = properCase(promptFor("What is the person's first name?", chars));
-    var lastName = properCase(promptFor("What is the person's last name?", chars));
-
-    let filteredPeople = people.filter(function(el) {
-        if(el.firstName === firstName && el.lastName === lastName) {
-        //     el.fullName = el.firstName + " " + el.lastName;
-        //     el.age = calculate_age(el.dob);
-         return el;
-        }
-    });
-    return filteredPeople;
-}
+// obsolete - incorporated in searchForPeople
+// function searchByName(people){
+//     var firstName = properCase(promptFor("What is the person's first name?", chars));
+//     var lastName = properCase(promptFor("What is the person's last name?", chars));
+//     let filteredPeople = people.filter(function(el) {
+//         if(el.firstName === firstName && el.lastName === lastName) {
+//         //     el.fullName = el.firstName + " " + el.lastName;
+//         //     el.age = calculate_age(el.dob);
+//          return el;
+//         }
+//     });
+//     return filteredPeople;
+// }
 
 function searchForPeople(searchType = "", people, idToSearch = -1){
     let filteredPeople;
@@ -171,7 +177,8 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
         //var searchCriteria = "fill this in";
         // idToSearch
         filteredPeople = people.filter(function(el) {
-            //if(el.currentSpouse === idToSearch || el.parents === idToSearch) {
+            
+            // TODO - test to see if the idToSearch is the 1st or 2nd in the list of parents
             if(el.currentSpouse === idToSearch || el.parents.indexOf (idToSearch) >= 0) {
                 if(el.currentSpouse === idToSearch) {
                   el.relationship = "Spouse";
@@ -191,7 +198,95 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
     }
     else if (searchType === "traits") {
         // TODO
-        var searchCriteria = "fill this in";
+        
+        // TODO:  do we want to get a list of valid values for the various traits?
+
+        // build the instructions for searching by traits:  
+        // the first letter of the trait followed by the value to search for, 
+        // followed by comma, e.g "e green, g female" ; e for eyeColor g for gender
+        let stringForPrompt = "";
+        // stringForPrompt = "Enter your search criteria using the first letter of the trait " +
+        //     ", based on the list of traits below.  " + 
+        //     "For example, to search for a green eyed female, enter \n'e green, g female' :\n" +
+        //     "gender (male or female)\nage\nheight\nweight\neye color\noccupation";
+
+        searchCriteria = prompt(stringForPrompt).toLowerCase;
+        if (searchCriteria == -1 ){
+            // TODO - replace with start over?
+            alert("handle this cancel")
+        }
+        let searchArray = searchCriteria.split(",");
+        
+        // set up filtered people object which will get further & further filtered
+        let filteredPeople = people;
+        // loop through the criteria, finding the key value and
+        // filter the people based on this trait
+
+        for (i = 0; i < searchArray.length; i++ ) {
+            // (searchArray[i].split(" "))[0] should be the letter e.g. e for eyeColor, 
+            // (searchArray[i].split(" "))[1] should be the search value e.g. green
+            // if the letter matches the first letter of the key, 
+            // use this key to further filter the filteredPeople
+            for (let key in person) {
+                let firstLetter = ""; 
+                alert("Testing starting here");
+                console.log( (searchArray[i].split(" "))[0]);
+                console.log( (searchArray[i].split(" "))[1]);
+                // verify two items in this array
+                if (searchArray.length != 2) {
+                    // TODO - handle this invalid user input
+                    alert("Invalid input, please try again.");
+                }
+                let searchValue = (searchArray[i].split(" "))[1].toLowerCase;
+                if (key[0] === (searchArray[i])[0]) {//  .split(" "))[0]) 
+                    // replace the initial with the key, e.g. e with eyeColor
+                    (searchArray[i].split(" "))[0] = key;
+                    console.log(searchArray);
+                    console.log(el.key);
+                    console.log(searchValue);
+                    
+                    // we found the right key, apply the filter
+                    filteredPeople = filteredPeople.filter(function(el) {
+                        if(el.key === searchValue ) {
+                            // el.fullName = el.firstName + " " + el.lastName;
+                            // el.age = calculate_age(el.dob);
+                            return el;
+                        }
+                    });
+
+                    // found the right key, we can exit the for loop for this trait
+                    break;
+                }
+                
+            } 
+        }   
+        console.log(searchArray);
+
+        // people = people.map(function (el) //
+        //     el.fullName = el.firstName + " " + el.lastName;
+        //     el.age = calculate_age(el.dob);
+        //     el.relationship = "";
+        //     return el;
+        // //);
+
+        // filteredPeople = people.filter(function(el) //
+        //     if(el.firstName === firstName && el.lastName === lastName) {
+        //         // el.fullName = el.firstName + " " + el.lastName;
+        //         // el.age = calculate_age(el.dob);
+        //         return el;
+        //     }
+        // //);
+
+
+
+
+
+
+
+
+
+
+
 
     }
     return filteredPeople;
@@ -309,4 +404,9 @@ function isAlphabetic(inputString = "") {
     return true;
 }
 
+// temp function to build the prompt & search by traits
+function searchTypeTraits() {
+    
+
+}   
 
