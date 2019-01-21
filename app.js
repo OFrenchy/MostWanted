@@ -50,7 +50,6 @@ Build all of your functions for displaying and gathering information below (GUI)
 // app is the function called to start the entire application
 function app(people){
     
-
     // Add these fields to all people at the start
     people = people.map(function (el) {
         el.fullName = el.firstName + " " + el.lastName;
@@ -84,11 +83,18 @@ function app(people){
         case 'n':
             // TODO: search by traits
             searchResults = searchForPeople("traits", people);
-            if (searchResults === -1) {
-                // we have already prompted invalid input, so just restart app
-                app(people);
+            // if (searchResults === -1) {
+            //     // we have already prompted invalid input, so just restart app - or break?
+            //     break;
+            //     //app(people);
+            // }
+            // Display the list of names, then restart
+            if (searchResults.length >= 1 ){
+                displayPeople(searchResults);
             }
-            mainMenu(searchResults[0], searchResults);
+            break;  // or app(people); ???
+
+            //mainMenu(searchResults[0], searchResults);
 
             break;
         default:
@@ -200,7 +206,6 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
 
     }
     else if (searchType === "traits") {
-        // TODO
         
         // TODO:  do we want to get a list of valid values for the various traits?
 
@@ -239,12 +244,13 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
             }
             let searchLetter = (searchPair[0]).trim();
             let searchValue = (searchPair[1]).trim();
-            
+            // check for a number for 
+
+
             // loop through all the keys, looking for the key whose first letter
             // matches the input initial;  when it finds the full key, apply 
             // the key & search value to filter the list of people      
             for (let key in people[0]) {
-                console.log( (people[0]).key );
                 // if the first letter of the key matches the first letter of the search field, 
                 // this is the correct key, so 
                 // apply the filter with the key & searchValue
@@ -255,7 +261,7 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
                     // key = "eyeColor", for example, searchValue = "brown"
                     // How do I pass this key to this filter 
                     filteredPeople = filteredPeople.filter(function(el) {
-                        if(el.key == searchValue ) {
+                        if((el[key]).toString() == searchValue ) {
                             return true;
                         }
                         else {
