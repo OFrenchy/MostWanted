@@ -223,29 +223,33 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
         // TODO
 
         let thisPersonArray = people.filter(function(el){
-          if(el.id = idToSearch){
+          if(el.id == idToSearch){
            return el;
           }
         });
 
-        let descendantsString = findChildren(thisPersonArray, people);
-        function findChildren(filteredPeople, people){
+        let descendantsString = findChildren(thisPersonArray, people, 0);
+        function findChildren(filteredPeople, people, descendantLevel){
          // for(let i = 0; i < filteredPeople.length; i++){
-         for(thisPerson in filteredPeople){
-           let descendantsString ="   " + thisPerson.fullName + "\n";
-            let childrenFound = people.filter(function(el){
-              if(el.parents.indexOf (idToSearch) >= 0){
+         let descendantsString = "";
+         let childrenFound;
+         //for(thisPerson in filteredPeople){
+          for(let i = 0; i < filteredPeople.length; i++){
+           descendantsString = descendantsString + "" + thisPersonArray[i].fullName + "\n";
+             childrenFound = people.filter(function(el){
+              if(el.parents.indexOf (thisPersonArray[i].id) >= 0){
                 el.relationship	 = "descendants";
                   return el;
               }
             });
+             descendantLevel++;
               if(childrenFound.length > 0){
-                 findChildren(childrenFound, people);
+                 findChildren(childrenFound, people, descendantLevel);
               }
           }
           return descendantsString;
          }   
-        
+        alert(descendantsString);
         
         }
         
