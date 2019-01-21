@@ -106,7 +106,7 @@ function app(people){
 
 // Menu function to call once you find who you are looking for
 function mainMenu(person, people){
-
+      let searchResults;
     /* Here we pass in the entire person object that we found in our search, 
         as well as the entire original dataset of people. We need people in 
         order to find descendants and other information that the user may want. */
@@ -127,7 +127,7 @@ function mainMenu(person, people){
         break;
     case "family":
         // DONE!  TODO: get person's family
-        let searchResults = searchForPeople("family", people, person.id);
+         searchResults = searchForPeople("family", people, person.id);
 
         //displayPeople
         if (searchResults.length >= 1 ){
@@ -140,7 +140,7 @@ function mainMenu(person, people){
         break;
     case "descendants":
       // TODO: get person's descendants
-      let searchResults = searchForPeople("descendants", people, person.id);
+       searchResults = searchForPeople("descendants", people, person.id);
 
       //displayPeople
       if (searchResults.length >= 1 ){
@@ -211,21 +211,46 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
     }
     else if (searchType === "descendants") {
         // TODO
-        filteredPeople = people.filter(function(el){
+      //   filteredPeople = people.filter(function(el){
 				
-          if(el.parents === idToSearch || el.parents.indexOf (idToSearch) >= 0){
-            if(el.parents === idToSearch){
-              el.relationship = "descendant";
-          }	
-          else{
-            el.relationship	 = "no descendants";
+      //     if(el.parents.indexOf (idToSearch) >= 0){
+      //        el.relationship	 = "descendants";
+          
+      //     return el;
+      //   }
+      // });
+     // searchResults = searchForPeople("descendants", people, person.id);
+        // TODO
+
+        let thisPersonArray = people.filter(function(el){
+          if(el.id = idToSearch){
+           return el;
           }
-          return el;
+        });
+
+        let descendantsString = findChildren(thisPersonArray, people);
+        function findChildren(filteredPeople, people){
+         // for(let i = 0; i < filteredPeople.length; i++){
+         for(thisPerson in filteredPeople){
+           let descendantsString ="   " + thisPerson.fullName + "\n";
+            let childrenFound = people.filter(function(el){
+              if(el.parents.indexOf (idToSearch) >= 0){
+                el.relationship	 = "descendants";
+                  return el;
+              }
+            });
+              if(childrenFound.length > 0){
+                 findChildren(childrenFound, people);
+              }
+          }
+          return descendantsString;
+         }   
+        
+        
         }
-      });
-        var searchCriteria = "fill this in";
+        
       
-    }
+    
     else if (searchType === "traits") {
         
         // TODO:  do we want to get a list of valid values for the various traits?
