@@ -339,10 +339,11 @@ function findDescendants(filteredPeople, people, descendantLevel){
                 return el;
             }
         });
-        descendantLevel++;
         if(childrenFound.length > 0){
-            let tempString = findDescendants(childrenFound, people, descendantLevel);
-            descendantsString = descendantsString + tempString;
+            descendantLevel++;
+            // let tempString = findDescendants(childrenFound, people, descendantLevel);
+            // descendantsString = descendantsString + tempString;
+            descendantsString = descendantsString + findDescendants(childrenFound, people, descendantLevel);
         }
     }
     return descendantsString;
