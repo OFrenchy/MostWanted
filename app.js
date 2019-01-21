@@ -330,7 +330,7 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
 function findDescendants(filteredPeople, people, descendantLevel){
     let descendantsString = "";
     let childrenFound;
-    let indentString = multiplyChars("   ", descendantLevel);
+    let indentString = multiplyChars("  ", descendantLevel);
 
     for(let i = 0; i < filteredPeople.length; i++){
         descendantsString = descendantsString + indentString + filteredPeople[i].fullName + "\n";
