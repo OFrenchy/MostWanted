@@ -235,6 +235,19 @@ let data = [
 		"currentSpouse": null
 	},
 	{
+		"id": 313998987,
+		"firstName": "Millie",
+		"lastName": "Madden",
+		"gender": "female",
+		"dob": "2/02/1990",
+		"height": 67,
+		"weight": 100,
+		"eyeColor": "blue",
+		"occupation": "doctor",
+		"parents": [819168108],
+		"currentSpouse": null
+	},
+	{
 		"id": 969837479,
 		"firstName": "Eloise",
 		"lastName": "Madden",
