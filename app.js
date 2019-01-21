@@ -139,18 +139,18 @@ function mainMenu(person, people){
         }
         break;
     case "descendants":
-      // TODO: get person's descendants
-       searchResults = searchForPeople("descendants", people, person.id);
-
-      //displayPeople
-      if (searchResults.length >= 1 ){
-          displayPeople(searchResults);
-      }
-      else {
-        // TODO NEED TO TEST THIS
-        alert("No descendants found for " + person.fullName);
-      }
-      break;
+        // TODO: get person's descendants
+        //searchResults = searchForPeople("descendants", people, person.id);
+        
+        searchForPeople("descendants", people, person.id);
+        // if (searchResults.length >= 1 ){
+        //     displayPeople(searchResults);
+        // }
+        // else {
+        //   // TODO NEED TO TEST THIS
+        //   alert("No descendants found for " + person.fullName);
+        // }
+        break;
     case "restart":
       app(people); // restart
       break;
@@ -230,7 +230,7 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
 
         let descendantsString = "";  //findDescendants(thisPersonArray, people, 0);
         
-        descendantsString = descendantsString + findDescendants(thisPersonArray, people, 0);
+        descendantsString = findDescendants(thisPersonArray, people, 0);
         alert(descendantsString);
         }
         
