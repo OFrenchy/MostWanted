@@ -134,7 +134,16 @@ function mainMenu(person, people){
         break;
     case "descendants":
       // TODO: get person's descendants
+      let searchResults = searchForPeople("descendants", people, person.id);
 
+      //displayPeople
+      if (searchResults.length >= 1 ){
+          displayPeople(searchResults);
+      }
+      else {
+        // TODO NEED TO TEST THIS
+        alert("No descendants found for " + person.fullName);
+      }
       break;
     case "restart":
       app(people); // restart
@@ -196,8 +205,20 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
     }
     else if (searchType === "descendants") {
         // TODO
+        filteredPeople = people.filter(function(el){
+				
+          if(el.parents === idToSearch || el.parents.indexOf (idToSearch) >= 0){
+            if(el.parents === idToSearch){
+              el.relationship = "descendant";
+          }	
+          else{
+            el.relationship	 = "no descendants";
+          }
+          return el;
+        }
+      });
         var searchCriteria = "fill this in";
-
+      
     }
     else if (searchType === "traits") {
         // TODO
