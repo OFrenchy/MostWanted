@@ -142,6 +142,7 @@ function mainMenu(person, people){
         // TODO: get person's descendants
         //searchResults = searchForPeople("descendants", people, person.id);
         
+        alert("test");
         searchForPeople("descendants", people, person.id);
         // if (searchResults.length >= 1 ){
         //     displayPeople(searchResults);
