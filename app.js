@@ -1,20 +1,24 @@
+
+// TODO : only add relationship if needed - may not want to add to master at launch
+
 /*
 Build all of your functions for displaying and gathering information below (GUI).
 */
 
 // - As a developer, I want to run validation on any user input, ensuring that a user 
 //      is re-prompted when they provide invalid input.
-// - As a user, I want to be able to search for someone based on a single criterion.
-// - As a user, I want to be able to search for someone based on 2-5 criteria.
+// -X As a user, I want to be able to search for someone based on a single criterion.
+// -X As a user, I want to be able to search for someone based on 2-5 criteria.
 // -X As a user, I want to be able to look up someone’s information after I find them 
 //      with the program (display values for the various traits of the found person).
-// - As a user, I want to be able look up someone’s descendants after I find them with 
+// -X As a user, I want to be able look up someone’s descendants after I find them with 
 //      the program (display the names of the descendants), using recursion.
 // -X As a user, I want to be able look up someone’s immediate family members after I 
 //      find them with the program (display the names of the family members and their 
 //      relation to the found person).
 // -X As a developer, I want to use the array.map() advanced array method within my project.
-// - As a developer, I want to make consistent commits with good, descriptive messages.
+// -X As a developer, I want to make consistent commits with good, descriptive messages.
+// - As a developer, I choose to define "immediate family" as spouse and children. 
 
 // The following are not in the scope of the project:
 // -----  FOR FUTURE IMPROVEMENTS  -------------------
@@ -29,24 +33,6 @@ Build all of your functions for displaying and gathering information below (GUI)
 //      people's eyeColor field
 
 
-// function promptForInput(promptForInput, dataType) {   
-//     let userInput = prompt(promptForInput)
-//     alert(typeof userInput == dataType);
-//     if (typeof userInput == dataType ){
-//         console.log(true)
-//         return userInput;
-//     }
-// }
-
-// var person = {
-//   firstName: "John",
-//   lastName : "Doe",
-//   id       : 5566,
-//   fullName : function() {
-//     return this.firstName + " " + this.lastName;
-//   }
-// };        
-
 // app is the function called to start the entire application
 function app(people){
     
@@ -54,52 +40,34 @@ function app(people){
     people = people.map(function (el) {
         el.fullName = el.firstName + " " + el.lastName;
         el.age = calculate_age(el.dob);
-        el.relationship = "";
+        //el.relationship = "";
         return el;
     });
-    // console.log(people);
-
-    //alert("first one is: " + (!isNaN("111") && "111" != "" && ("111").indexOf(" ") == -1));
-    
-    // test for numeric inputs
-    // alert("test first one is: " + ((!isNaN("111"))  &&  ("111" != "") && ("111").indexOf(" ") == -1));
-    // alert("test  2nd  one is: " + ((!isNaN("1 11"))  &&  ("11 1" != "") && ("1 11").indexOf(" ") == -1));
-
-    // // test for alphabetic characters
-    // alert("testing isAlphabetic function: " + isAlphabetic("abc") );
-    // alert("testing isAlphabetic function: " + isAlphabetic("ab12cd"));
-
-
     
     let searchResults;
     var searchType = promptFor("Do you know the name of the person you are looking for? Enter 'y' for yes or 'n' for no", yesNo).toLowerCase();
     switch(searchType){
-        case 'y':
-            // this next line works
-            // let thisPerson = searchByName(people);
+        case "y":
+            // Search by name
             searchResults = searchForPeople("name", people) ;
             mainMenu(searchResults[0], people);
             break;
-        case 'n':
-            // TODO: search by traits
+        case "n":
+            // Search by traits
             searchResults = searchForPeople("traits", people);
-            // if (searchResults === -1) {
-            //     // we have already prompted invalid input, so just restart app - or break?
-            //     break;
-            //     //app(people);
-            // }
             // Display the list of names, then restart
             if (searchResults.length >= 1 ){
                 displayPeople(searchResults);
             }
+            else {
+                alert("No person found based on those traits.");
+            }
             break;  // or app(people); ???
-
-            //mainMenu(searchResults[0], searchResults);
-
-            break;
         default:
-            alert("Invalid input. Please try again!");
-            app(people); // restart app
+            alert("Invalid input or user cancelled.  Please try again!");
+            // removed - if user hits escape or clicks cancel, 
+            // he ends up in an infinite loop with no way to cancel
+            //app(people); // restart app
         break;
     }
 }
@@ -122,34 +90,28 @@ function mainMenu(person, people){
 
   switch(displayOption){
     case "info":
-        // DONE!  TODO: get person's info
+        // Get person's info
         displayPerson(person);
         break;
     case "family":
-        // DONE!  TODO: get person's family
-         searchResults = searchForPeople("family", people, person.id);
-
-        //displayPeople
+        // Get person's family
+        searchResults = searchForPeople("family", people, person.id);
         if (searchResults.length >= 1 ){
             displayPeople(searchResults);
         }
         else {
-          // TODO NEED TO TEST THIS
-          alert("No family found for " + person.fullName);
+            alert("No family found for " + person.fullName);
         }
         break;
     case "descendants":
-        // TODO: get person's descendants
-        //searchResults = searchForPeople("descendants", people, person.id);
-        
-        searchForPeople("descendants", people, person.id);
-        // if (searchResults.length >= 1 ){
-        //     displayPeople(searchResults);
-        // }
-        // else {
-        //   // TODO NEED TO TEST THIS
-        //   alert("No descendants found for " + person.fullName);
-        // }
+        // Get person's descendants
+        let descendantsString = searchForPeople("descendants", people, person.id);
+        if (descendantsString.length >= 1 ){
+            alert(descendantsString);
+        }
+        else {
+          alert("No descendants found for " + person.fullName);
+        }
         break;
     case "restart":
       app(people); // restart
@@ -188,7 +150,7 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
                 return el;
             }
         });
-        //return filteredPeople;
+        return filteredPeople;
 
     }
     else if (searchType === "family") {
@@ -207,34 +169,22 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
                 return el;
             }
         });
-        //return filteredPeople;
+        return filteredPeople;
     }
     else if (searchType === "descendants") {
-        // TODO
-      //   filteredPeople = people.filter(function(el){
-        
-      //     if(el.parents.indexOf (idToSearch) >= 0){
-      //        el.relationship  = "descendants";
-          
-      //     return el;
-      //   }
-      // });
-     // searchResults = searchForPeople("descendants", people, person.id);
-        // TODO
-
+        // Search for descendants
         let thisPersonArray = people.filter(function(el){
             if(el.id == idToSearch){
              return el;
             }
         });
-
         let descendantsString = "";  //findDescendants(thisPersonArray, people, 0);
-        
         descendantsString = findDescendants(thisPersonArray, people, 0);
-        alert(descendantsString);
-        }
-        
-      
+        // alert(descendantsString);
+        //    For future development:  should not return a string, 
+        //    but should return an array of people, like the other options
+        return descendantsString;
+    }
     
     else if (searchType === "traits") {
         
@@ -250,12 +200,12 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
             "gender (male or female)\nage\nheight\nweight\neye color\noccupation";
 
         searchCriteria = prompt(stringForPrompt).toLowerCase();
-        //searchCriteria = searchCriteria.toLowerCase();
         if (searchCriteria == -1 ){
-            // TODO - replace with start over?
-            alert("handle this cancel")
+            // TODO - test - replace with start over?
+            //alert("handle this cancel")
+            return -1; 
         }
-        //console.log(searchCriteria);
+        // split the criteria by commas
         let searchArray = searchCriteria.split(",");
         
         // set up filtered people object which will get further & further filtered
@@ -275,9 +225,7 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
             }
             let searchLetter = (searchPair[0]).trim();
             let searchValue = (searchPair[1]).trim();
-            // check for a number for 
-
-
+            
             // loop through all the keys, looking for the key whose first letter
             // matches the input initial;  when it finds the full key, apply 
             // the key & search value to filter the list of people      
@@ -287,10 +235,7 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
                 // apply the filter with the key & searchValue
                 if (key[0] === searchLetter) {
                     // we found the right key, apply the filter
-
-                    // PROBLEM HERE WITH el.key, which comes up undefined - 
                     // key = "eyeColor", for example, searchValue = "brown"
-                    // How do I pass this key to this filter 
                     filteredPeople = filteredPeople.filter(function(el) {
                         if((el[key]).toString() == searchValue ) {
                             return true;
@@ -304,27 +249,12 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
                     console.log(filteredPeople.length + " found")
                     break;
                 }
-            } 
+            }
         }   
-        console.log(searchArray);
-
-        // people = people.map(function (el) //
-        //     el.fullName = el.firstName + " " + el.lastName;
-        //     el.age = calculate_age(el.dob);
-        //     el.relationship = "";
-        //     return el;
-        // //);
-
-        // filteredPeople = people.filter(function(el) //
-        //     if(el.firstName === firstName && el.lastName === lastName) {
-        //         // el.fullName = el.firstName + " " + el.lastName;
-        //         // el.age = calculate_age(el.dob);
-        //         return el;
-        //     }
-        // //);
+        return filteredPeople;
 
     }
-    return filteredPeople;
+    //return filteredPeople;
 }
 
 function findDescendants(filteredPeople, people, descendantLevel){
@@ -341,14 +271,13 @@ function findDescendants(filteredPeople, people, descendantLevel){
             }
         });
         if(childrenFound.length > 0){
-            // let tempString = findDescendants(childrenFound, people, descendantLevel);
-            // descendantsString = descendantsString + tempString;
             descendantsString = descendantsString + findDescendants(childrenFound, people, descendantLevel);
         }
     }
     return descendantsString;
 }
 
+// used by findDescendants to offset children from their parents 
 function multiplyChars(charsToRepeat, multiplier) {
     let thisString = "";
     for (let i = 0; i < multiplier; i++) {
@@ -359,8 +288,8 @@ function multiplyChars(charsToRepeat, multiplier) {
 
 // alerts a list of people
 function displayPeople(people){
+    // Build a list of people, and if there is a relationship string, include it.  
     alert(people.map(function(person){
-        //return if(person.relationship != ""){return person.relationship + ": ";} + person.fullName;
         let returnString = "";
         if (person.relationship != "") {
             returnString = person.relationship + ": ";
@@ -384,21 +313,29 @@ function displayPerson(person){
         //console.log(key + ": " + value);
         personInfo += key + ": " + value + "\n";
     }
-    // DONE! TODO: finish getting the rest of the information to display
     alert(personInfo);
 }
 
 // function that prompts and validates user input
 function promptFor(question, callback){
     do{
-        var response = prompt(question).trim();
+        // var response = prompt(question).trim();
+        var response = prompt(question);
+        if (response == null){
+            // user clicked cancel or hit escape
+            return "";
+        }
+        else {
+          response = response.trim();
+        }
     } while(!response || !callback(response));
     return response;
 }
 
 // helper function to pass into promptFor to validate yes/no answers
+// CHANGED to allow user to hit escape or click cancel, which results in a null
 function yesNo(input){
-    return input[0].toLowerCase() == "y" || input[0].toLowerCase() == "n";
+    return input[0].toLowerCase() == "y" || input[0].toLowerCase() == "n" || input == null;
 }
 
 // helper function to pass in as default promptFor validation
@@ -469,9 +406,11 @@ function isAlphabetic(inputString = "") {
     return true;
 }
 
-// temp function to build the prompt & search by traits
-function searchTypeTraits() {
-    
 
-}   
 
+  // For future reference:
+  // from https://www.w3schools.com/js/js_string_methods.asp
+  // if (!String.prototype.trim) {
+  //   String.prototype.trim = function () {
+  //     return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+  // };
