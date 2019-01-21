@@ -223,15 +223,31 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
         // TODO
 
         let thisPersonArray = people.filter(function(el){
-            if(el.id == idToSearch){
-             return el;
-            }
+          if(el.id = idToSearch){
+           return el;
+          }
         });
 
-        let descendantsString = "";  //findDescendants(thisPersonArray, people, 0);
+        let descendantsString = findChildren(thisPersonArray, people, 0);
+        function findChildren(filteredPeople, people, descendantLevel){
+         // for(let i = 0; i < filteredPeople.length; i++){
+         for(thisPerson in filteredPeople){
+           let descendantsString ="   " + thisPerson.fullName + "\n";
+            let childrenFound = people.filter(function(el){
+              if(el.parents.indexOf (thisPerson.id) >= 0){
+                el.relationship	 = "descendants";
+                  return el;
+              }
+            });
+             level++;
+              if(childrenFound.length > 0){
+                 findChildren(childrenFound, people,);
+              }
+          }
+          return descendantsString;
+         }   
         
-        descendantsString = descendantsString + findDescendants(thisPersonArray, people, 0);
-        alert(descendantsString);
+        
         }
         
       
@@ -323,38 +339,19 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
         //     }
         // //);
 
+
+
+
+
+
+
+
+
+
+
+
     }
     return filteredPeople;
-}
-
-function findDescendants(filteredPeople, people, descendantLevel){
-    let descendantsString = "";
-    let childrenFound;
-    let indentString = multiplyChars("  ", descendantLevel);
-
-    for(let i = 0; i < filteredPeople.length; i++){
-        descendantsString = descendantsString + indentString + filteredPeople[i].fullName + "\n";
-        childrenFound = people.filter(function(el){
-            if(el.parents.indexOf (filteredPeople[i].id) >= 0){
-                return el;
-            }
-        });
-        if(childrenFound.length > 0){
-            descendantLevel++;
-            // let tempString = findDescendants(childrenFound, people, descendantLevel);
-            // descendantsString = descendantsString + tempString;
-            descendantsString = descendantsString + findDescendants(childrenFound, people, descendantLevel);
-        }
-    }
-    return descendantsString;
-}
-
-function multiplyChars(charsToRepeat, multiplier) {
-    let thisString = "";
-    for (let i = 0; i < multiplier; i++) {
-        thisString = thisString + charsToRepeat.toString();
-    }
-    return thisString;
 }
 
 // alerts a list of people
