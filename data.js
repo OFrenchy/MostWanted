@@ -1,5 +1,21 @@
 // You may modify this for testing purposes.
 let data = [
+	//
+	// added Alma Mader as CURRENT wife of Mader Madden (Joy is EX-wife)
+	{
+		"id": 100,
+		"firstName": "Alma",
+		"lastName": "Mader",
+		"gender": "female",
+		"dob": "9/1/1939",
+		"height": 66,
+		"weight": 130,
+		"eyeColor": "blue",
+		"occupation": "hotWife",
+		"parents": [],
+		"currentSpouse": 888201200
+	},
+	//
 	// added 12 (as a child of married to 34, with kids 56 & 78, as descendants of Hana Madden - 
 	// descendants of Mader Madden & Joy Madden 
 	{
@@ -182,7 +198,7 @@ let data = [
 		"eyeColor": "black",
 		"occupation": "landscaper",
 		"parents": [],
-		"currentSpouse": null
+		"currentSpouse": 100
 	},
 	{
 		"id": 878013758,

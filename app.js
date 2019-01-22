@@ -175,7 +175,7 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
         });
         // Add the initial person to the top/front of the array
         let originalSearch = searchForPeople("id", people, idToSearch);
-        originalSearch[0].relationship = "Parent";
+        originalSearch[0].relationship = "Search";
         filteredPeople.unshift(originalSearch[0]);
         return filteredPeople;
     }
@@ -183,7 +183,7 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
     // added to retrieve the original person searched for, to put at the top 
     // of the family list. 
     else if (searchType === "id") {
-        // id search - currently only used internally
+        // id search - currently only used internally by searchType family
         filteredPeople = people.filter(function(el) {
             if(el.id === idToSearch ) {
                 return el;
@@ -276,8 +276,10 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
 }
 
 // function to find decendants of a person.  
-//  In the output/alert string, offset each successive generation by four (?) spaces, 
-//  indicating children & the successive generations of children
+//  In the output/alert string, offset/indent each successive generation by four (?) spaces, 
+//  indicating children & the successive generations of children.  In other words, when 
+//  a parent has a child, indent = move the child's name further to the right, 
+//  indicating a parent/child relationship
 //  We will use recursion to drill down to the successive generations.  
 //  We have added a few new people to the dataset to demonstrate this functionality; 
 //  use Mader Madden or Joy Madden as the search person, then select "descendants"
