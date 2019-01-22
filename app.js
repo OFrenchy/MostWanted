@@ -111,20 +111,6 @@ function mainMenu(person, people){
         }
         break;
     case "descendants":
-<<<<<<< HEAD
-        // TODO: get person's descendants
-        //searchResults = searchForPeople("descendants", people, person.id);
-        
-        
-        searchForPeople("descendants", people, person.id);
-        // if (searchResults.length >= 1 ){
-        //     displayPeople(searchResults);
-        // }
-        // else {
-        //   // TODO NEED TO TEST THIS
-        //   alert("No descendants found for " + person.fullName);
-        // }
-=======
         // Get person's descendants
         let descendantsString = searchForPeople("descendants", people, person.id);
         if (descendantsString.length >= 1 ){
@@ -133,7 +119,6 @@ function mainMenu(person, people){
         else {
           alert("No descendants found for " + person.fullName);
         }
->>>>>>> 10225d71136c14dfc4ebcb865571281bbc9dfcb2
         break;
     case "restart":
       app(people); // restart
@@ -303,15 +288,8 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
 function findDescendants(filteredPeople, people, descendantLevel){
     let descendantsString = "";
     let childrenFound;
-<<<<<<< HEAD
-    let indentString = multiplyChars("   ", descendantLevel);
-    descendantLevel++;
-    
-=======
     let indentString = multiplyChars("    ", descendantLevel);
     descendantLevel++;
-
->>>>>>> 10225d71136c14dfc4ebcb865571281bbc9dfcb2
     for(let i = 0; i < filteredPeople.length; i++){
         descendantsString = descendantsString + indentString + filteredPeople[i].fullName + "\n";
         childrenFound = people.filter(function(el){
@@ -320,11 +298,6 @@ function findDescendants(filteredPeople, people, descendantLevel){
             }
         });
         if(childrenFound.length > 0){
-<<<<<<< HEAD
-            // let tempString = findDescendants(childrenFound, people, descendantLevel);
-            // descendantsString = descendantsString + tempString;
-=======
->>>>>>> 10225d71136c14dfc4ebcb865571281bbc9dfcb2
             descendantsString = descendantsString + findDescendants(childrenFound, people, descendantLevel);
         }
     }
