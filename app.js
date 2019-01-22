@@ -142,7 +142,7 @@ function mainMenu(person, people){
         // TODO: get person's descendants
         //searchResults = searchForPeople("descendants", people, person.id);
         
-        alert("test");
+        
         searchForPeople("descendants", people, person.id);
         // if (searchResults.length >= 1 ){
         //     displayPeople(searchResults);
@@ -332,7 +332,8 @@ function findDescendants(filteredPeople, people, descendantLevel){
     let descendantsString = "";
     let childrenFound;
     let indentString = multiplyChars("   ", descendantLevel);
-
+    descendantLevel++;
+    
     for(let i = 0; i < filteredPeople.length; i++){
         descendantsString = descendantsString + indentString + filteredPeople[i].fullName + "\n";
         childrenFound = people.filter(function(el){
@@ -341,7 +342,6 @@ function findDescendants(filteredPeople, people, descendantLevel){
             }
         });
         if(childrenFound.length > 0){
-            descendantLevel++;
             // let tempString = findDescendants(childrenFound, people, descendantLevel);
             // descendantsString = descendantsString + tempString;
             descendantsString = descendantsString + findDescendants(childrenFound, people, descendantLevel);
