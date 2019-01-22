@@ -28,7 +28,7 @@ let data = [
 		"height": 65,
 		"weight": 125,
 		"eyeColor": "brown",
-		"occupation": "lovingWife",
+		"occupation": "hotWife",
 		"parents": [819168108],
 		"currentSpouse": 34
 	},

@@ -256,6 +256,8 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
                     // key = "eyeColor", for example, searchValue = "brown"
                     filteredPeople = filteredPeople.filter(function(el) {
                         if((el[key]).toString() == searchValue ) {
+                            // overwrite any relationship with "" for trait search
+                            el.relationship = "";
                             return true;
                         }
                         else {
