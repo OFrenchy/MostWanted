@@ -1,6 +1,4 @@
 
-// TODO : only add relationship if needed - may not want to add to master at launch
-
 /*
 Build all of your functions for displaying and gathering information below (GUI).
 */
@@ -19,6 +17,10 @@ Build all of your functions for displaying and gathering information below (GUI)
 // -X As a developer, I want to use the array.map() advanced array method within my project.
 // -X As a developer, I want to make consistent commits with good, descriptive messages.
 // - As a developer, I choose to define "immediate family" as spouse and children. 
+//      However, upon further review, I would change immediate family to be a follows:
+//          - if the person is married, his/her family would be spouse and children 
+//          - if the person is not married, his/her family would be 
+//              parents & brothers & sisters
 
 // The following are not in the scope of the project:
 // -----  FOR FUTURE IMPROVEMENTS  -------------------
@@ -27,10 +29,15 @@ Build all of your functions for displaying and gathering information below (GUI)
 // - As a developer, I want to display the spouse's and parents names instead of their 
 //      id numbers.
 // - As a developer, I want to exit the function gracefully any time the user hits
-//      escape instead of entering yes or no or whatever it's expecting
+//      escape instead of entering yes or no or whatever it's expecting - we tried our best
 // - As a user, I want to see a list of valid values for the various traits, 
 //      e.g. eyeColor: green, blue, hazel, etc., which would be culled from the 
 //      people's eyeColor field
+// - As a user, I would want to change the definition of "immediate family" 
+//      to be a follows:
+//          - if the person is married, his/her family would be spouse and children 
+//          - if the person is not married, his/her family would be 
+//              parents & brothers & sisters
 
 
 // app is the function called to start the entire application
@@ -137,6 +144,7 @@ function mainMenu(person, people){
 //     return filteredPeople;
 // }
 
+// initial search function 
 function searchForPeople(searchType = "", people, idToSearch = -1){
     let filteredPeople;
     if (searchType === "name") {
@@ -151,14 +159,10 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
             }
         });
         return filteredPeople;
-
     }
     else if (searchType === "family") {
-        //var searchCriteria = "fill this in";
-        // idToSearch
+        // family search - currently spouse or children
         filteredPeople = people.filter(function(el) {
-            
-            // TODO - test to see if the idToSearch is the 1st or 2nd in the list of parents
             if(el.currentSpouse === idToSearch || el.parents.indexOf (idToSearch) >= 0) {
                 if(el.currentSpouse === idToSearch) {
                   el.relationship = "Spouse";
@@ -169,18 +173,34 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
                 return el;
             }
         });
+        // Add the initial person to the top/front of the array
+        let originalSearch = searchForPeople("id", people, idToSearch);
+        originalSearch[0].relationship = "Parent";
+        filteredPeople.unshift(originalSearch[0]);
         return filteredPeople;
     }
+
+    // added to retrieve the original person searched for, to put at the top 
+    // of the family list. 
+    else if (searchType === "id") {
+        // id search - currently only used internally
+        filteredPeople = people.filter(function(el) {
+            if(el.id === idToSearch ) {
+                return el;
+            }
+        });
+        return filteredPeople;
+    }
+
     else if (searchType === "descendants") {
-        // Search for descendants
+        // Search for descendants, through all subsequent generations
         let thisPersonArray = people.filter(function(el){
             if(el.id == idToSearch){
              return el;
             }
         });
-        let descendantsString = "";  //findDescendants(thisPersonArray, people, 0);
+        let descendantsString = "";
         descendantsString = findDescendants(thisPersonArray, people, 0);
-        // alert(descendantsString);
         //    For future development:  should not return a string, 
         //    but should return an array of people, like the other options
         return descendantsString;
@@ -188,11 +208,11 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
     
     else if (searchType === "traits") {
         
-        // TODO:  do we want to get a list of valid values for the various traits?
-
         // build the instructions for searching by traits:  
         // the first letter of the trait followed by the value to search for, 
         // followed by comma, e.g "e green, g female" ; e for eyeColor g for gender
+        // Any future additional fields should keep the first letter of the key unique, 
+        // or the code will not produce accurate results.  
         let stringForPrompt = "";
         stringForPrompt = "Enter your search criteria using the first letter of the trait " +
             ", based on the list of traits below.  " + 
@@ -201,8 +221,7 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
 
         searchCriteria = prompt(stringForPrompt).toLowerCase();
         if (searchCriteria == -1 ){
-            // TODO - test - replace with start over?
-            //alert("handle this cancel")
+            // handle the user cancel
             return -1; 
         }
         // split the criteria by commas
@@ -212,14 +231,13 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
         filteredPeople = people;
         // loop through the criteria, finding the key value and
         // filter the people based on this trait
-
         for (i = 0; i < searchArray.length; i++ ) {
             // if the letter matches the first letter of the key, 
             // use this key to further filter the filteredPeople
             let searchPair = (searchArray[i].trim()).split(" ");
             // verify two items in this array
             if (searchPair.length != 2) {
-                // TODO - handle this invalid user input
+                // handle invalid user input
                 alert("Invalid input, please try again.");
                 return -1; 
             }
@@ -257,10 +275,16 @@ function searchForPeople(searchType = "", people, idToSearch = -1){
     //return filteredPeople;
 }
 
+// function to find decendants of a person.  
+//  In the output/alert string, offset each successive generation by four (?) spaces, 
+//  indicating children & the successive generations of children
+//  We will use recursion to drill down to the successive generations.  
+//  We have added a few new people to the dataset to demonstrate this functionality; 
+//  use Mader Madden or Joy Madden as the search person, then select "descendants"
 function findDescendants(filteredPeople, people, descendantLevel){
     let descendantsString = "";
     let childrenFound;
-    let indentString = multiplyChars("   ", descendantLevel);
+    let indentString = multiplyChars("    ", descendantLevel);
     descendantLevel++;
 
     for(let i = 0; i < filteredPeople.length; i++){
@@ -277,7 +301,7 @@ function findDescendants(filteredPeople, people, descendantLevel){
     return descendantsString;
 }
 
-// used by findDescendants to offset children from their parents 
+// used by findDescendants to offset children from their parents in the alert box
 function multiplyChars(charsToRepeat, multiplier) {
     let thisString = "";
     for (let i = 0; i < multiplier; i++) {
@@ -297,12 +321,6 @@ function displayPeople(people){
         return returnString + person.fullName;
     }).join("\n"));
 }
-
-// function displayPeople(people){
-//   alert(people.map(function(person){
-//     return person.firstName + " " + person.lastName;
-//   }).join("\n"));
-//}
 
 function displayPerson(person){
     // print all of the information about a person:

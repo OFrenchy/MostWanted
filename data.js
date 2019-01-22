@@ -1,5 +1,59 @@
 // You may modify this for testing purposes.
 let data = [
+	// added 12 (as a child of married to 34, with kids 56 & 78, as descendants of Hana Madden - 
+	// descendants of Mader Madden & Joy Madden 
+	{
+		"id": 12,
+		"firstName": "Hannah",
+		"lastName": "Banana",
+		"gender": "female",
+		"dob": "10/7/1983",
+		"height": 65,
+		"weight": 125,
+		"eyeColor": "brown",
+		"occupation": "lovingWife",
+		"parents": [819168108],
+		"currentSpouse": 34
+	},
+	{
+		"id": 34,
+		"firstName": "Chiquita",
+		"lastName": "Banana",
+		"gender": "male",
+		"dob": "7/4/1982",
+		"height": 69,
+		"weight": 175,
+		"eyeColor": "brown",
+		"occupation": "programmerAndLovingHusband",
+		"parents": [],
+		"currentSpouse": 12
+	},
+	{
+		"id": 56,
+		"firstName": "Petita",
+		"lastName": "Banana",
+		"gender": "female",
+		"dob": "7/4/2005",
+		"height": 59,
+		"weight": 105,
+		"eyeColor": "green",
+		"occupation": "student",
+		"parents": [12, 34],
+		"currentSpouse": null
+	},
+	{
+		"id": 78,
+		"firstName": "Max",
+		"lastName": "Banana",
+		"gender": "male",
+		"dob": "7/4/2000",
+		"height": 69,
+		"weight": 170,
+		"eyeColor": "brown",
+		"occupation": "student",
+		"parents": [12, 34],
+		"currentSpouse": null
+	},
 	{
 		"id": 272822514,
 		"firstName": "Billy",
